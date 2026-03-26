@@ -1,4 +1,4 @@
-import { listPublicForms } from "../../shared/scenarios";
+import { listPublicForms } from "../../shared/scenarios.js";
 
 export default function handler(req: any, res: any) {
   if (req.method !== "GET") {

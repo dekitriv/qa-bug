@@ -1,7 +1,7 @@
-import { buildNonFieldValidationError, getScenario, listPublicForms } from "./scenarios";
-import { createDetailsToken, parseDetailsToken } from "./details-token";
-import { runSubmission } from "./submitters";
-import type { ApiResponse, SubmitPayload } from "./types";
+import { buildNonFieldValidationError, getScenario, listPublicForms } from "./scenarios.js";
+import { createDetailsToken, parseDetailsToken } from "./details-token.js";
+import { runSubmission } from "./submitters.js";
+import type { ApiResponse, SubmitPayload } from "./types.js";
 
 export function unsupportedMethodResponse(): ApiResponse<null> {
   return {

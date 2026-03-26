@@ -3,7 +3,7 @@ import {
   normalizeSlug,
   normalizeToken,
   unsupportedMethodResponse
-} from "../../../shared/api-service";
+} from "../../../shared/api-service.js";
 
 export default function handler(req: any, res: any) {
   if (req.method !== "GET") {
@@ -16,4 +16,3 @@ export default function handler(req: any, res: any) {
   const response = getFormDetailsResponse(slug ?? "", token);
   res.status(response.status).json(response);
 }
-

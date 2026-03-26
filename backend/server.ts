@@ -7,8 +7,8 @@ import {
   getFormsResponse,
   normalizeToken,
   submitFormResponse
-} from "../shared/api-service";
-import type { ApiResponse } from "../shared/types";
+} from "../shared/api-service.js";
+import type { ApiResponse } from "../shared/types.js";
 
 const app = express();
 const port = Number(process.env.PORT ?? 4000);

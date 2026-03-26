@@ -1,5 +1,5 @@
-import type { ApiResponse, FormSlug } from "./types";
-import { buildValidationError, validateSubmission } from "./scenarios";
+import type { ApiResponse, FormSlug } from "./types.js";
+import { buildValidationError, validateSubmission } from "./scenarios.js";
 
 function collectFieldErrors(error: unknown): Record<string, string[]> {
   if (typeof error !== "object" || error === null || !("issues" in error)) {

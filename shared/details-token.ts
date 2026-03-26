@@ -1,6 +1,6 @@
 import { Buffer } from "node:buffer";
 
-import type { FormSlug } from "./types";
+import type { FormSlug } from "./types.js";
 
 interface DetailsTokenPayload {
   slug: FormSlug;

@@ -3,7 +3,7 @@ import {
   normalizeSlug,
   submitFormResponse,
   unsupportedMethodResponse
-} from "../../../shared/api-service";
+} from "../../../shared/api-service.js";
 
 export default function handler(req: any, res: any) {
   if (req.method !== "POST") {
@@ -15,4 +15,3 @@ export default function handler(req: any, res: any) {
   const response = submitFormResponse(slug ?? "", normalizePayload(req.body));
   res.status(response.status).json(response);
 }
-

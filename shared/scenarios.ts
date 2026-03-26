@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import type { ApiResponse, BugSpec, FormScenario, FormSlug, PublicFormSummary } from "./types";
+import type { ApiResponse, BugSpec, FormScenario, FormSlug, PublicFormSummary } from "./types.js";
 
 const serbianPhoneRegex = /^06\d{7,8}$/;
 
