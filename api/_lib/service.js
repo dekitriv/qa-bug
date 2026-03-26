@@ -60,8 +60,6 @@ const scenarios = [
         label: "Mobilni telefon",
         type: "tel",
         required: true,
-        helperText:
-          "Format: 06 i još 7 ili 8 cifara (npr. 0612345678). Ne unosite razmake, crtice ni +381.",
         halfWidth: true
       },
       { name: "email", label: "Imejl", type: "email", required: true, halfWidth: true }
@@ -143,31 +141,31 @@ const scenarios = [
   },
   {
     slug: "benefits-enrollment",
-    title: "Benefits Enrollment",
-    description: "Coverage and dependents",
-    progressLabel: "Step 5 of 6",
-    overview: "Family coverage should preserve dependent data and submit it for review.",
-    submitLabel: "Save benefits enrollment",
-    expectedOutcome: "Dependents should remain attached whenever family coverage is selected.",
+    title: "Benefiti",
+    description: "",
+    progressLabel: "Korak 5 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj benefite",
+    expectedOutcome: "",
     fields: [
       {
         name: "coverageTier",
-        label: "Coverage tier",
+        label: "Nivo pokrivenosti",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Single", value: "single" },
-          { label: "Family", value: "family" },
-          { label: "Employee + partner", value: "partner" }
+          { label: "Pojedinac", value: "single" },
+          { label: "Porodica", value: "family" },
+          { label: "Zaposleni + partner", value: "partner" }
         ]
       },
-      { name: "coverageStart", label: "Coverage start", type: "date", required: true, halfWidth: true },
+      { name: "coverageStart", label: "Početak pokrivenosti", type: "date", required: true, halfWidth: true },
       {
         name: "dependents",
-        label: "Dependents",
+        label: "Članovi porodice (zavisni)",
         type: "textarea",
-        helperText: "List each dependent on a new line.",
+        helperText: "Svakog člana navedite u novom redu.",
         showWhen: {
           field: "coverageTier",
           equals: "family"
@@ -182,28 +180,28 @@ const scenarios = [
   },
   {
     slug: "system-access-request",
-    title: "System Access Request",
+    title: "Zahtev za pristup sistemima",
     description: "",
-    progressLabel: "Step 6 of 6",
+    progressLabel: "Korak 6 od 6",
     overview: "",
-    submitLabel: "Provision access",
+    submitLabel: "Podnesi zahtev za pristup",
     expectedOutcome: "",
     fields: [
       {
         name: "roleProfile",
-        label: "Role profile",
+        label: "Profil uloge",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Analyst", value: "analyst" },
-          { label: "Manager", value: "manager" },
-          { label: "Admin", value: "admin" }
+          { label: "Analitičar", value: "analyst" },
+          { label: "Menadžer", value: "manager" },
+          { label: "Administrator", value: "admin" }
         ]
       },
       {
         name: "requestedSystems",
-        label: "Requested systems",
+        label: "Traženi sistemi",
         type: "multiselect",
         required: true,
         options: [
@@ -213,7 +211,7 @@ const scenarios = [
           { label: "HubSpot", value: "hubspot" }
         ]
       },
-      { name: "notes", label: "Access notes", type: "textarea" }
+      { name: "notes", label: "Napomene za pristup", type: "textarea" }
     ],
     initialValues: {
       roleProfile: "analyst",

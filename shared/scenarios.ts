@@ -61,8 +61,6 @@ const scenarios: FormScenario[] = [
         label: "Mobilni telefon",
         type: "tel",
         required: true,
-        helperText:
-          "Format: 06 i još 7 ili 8 cifara (npr. 0612345678). Ne unosite razmake, crtice ni +381.",
         halfWidth: true
       },
       { name: "email", label: "Imejl", type: "email", required: true, halfWidth: true }
