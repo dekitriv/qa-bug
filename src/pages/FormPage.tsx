@@ -21,17 +21,21 @@ export function FormPage() {
 
     fetchForm(slug)
       .then((response) => setScenario(response.form))
-      .catch(() => setError("Unable to load the form from the backend."));
+      .catch(() => setError("Nije moguće učitati formular sa bekenda."));
   }, [slug]);
 
   return (
     <AdminLayout
-      title={scenario?.title ?? "Loading form..."}
-      breadcrumb={`Home / QA Forms / ${scenario?.title ?? "Loading"}`}
+      title={scenario?.title ?? "Učitavanje…"}
+      breadcrumb={`Početna / QA formulari / ${scenario?.title ?? "Učitavanje"}`}
       actions={scenario ? <span className="soft-badge">{scenario.progressLabel}</span> : null}
     >
       {error ? <div className="alert">{error}</div> : null}
-      {!error && !scenario ? <section className="content-card"><div className="card-content">Loading form...</div></section> : null}
+      {!error && !scenario ? (
+        <section className="content-card">
+          <div className="card-content">Učitavanje formulara…</div>
+        </section>
+      ) : null}
       {scenario ? <FormWorkbench scenario={scenario} /> : null}
     </AdminLayout>
   );

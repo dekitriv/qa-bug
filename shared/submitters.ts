@@ -17,7 +17,10 @@ function collectFieldErrors(error: unknown): Record<string, string[]> {
   }, {});
 }
 
-export function runSubmission(slug: FormSlug, values: Record<string, unknown>): ApiResponse<Record<string, unknown> | Record<string, string[]>> {
+export function runSubmission(
+  slug: FormSlug,
+  values: Record<string, unknown>
+): ApiResponse<Record<string, unknown> | Record<string, string[]> | string | null> {
   const validation = validateSubmission(slug, values);
 
   if (!validation.success) {
@@ -31,48 +34,48 @@ export function runSubmission(slug: FormSlug, values: Record<string, unknown>): 
       return {
         success: false,
         status: 500,
-        message: "Internal server error.",
+        message: "Interna greška servera.",
         data: null
       };
     case "emergency-contact":
       return {
         success: true,
         status: 201,
-        message: "Emergency contact saved.",
+        message: "Hitni kontakt je sačuvan.",
         data: validValues
       };
     case "job-assignment":
       return {
         success: true,
         status: 201,
-        message: "Job assignment saved.",
+        message: "Dodela posla je sačuvana.",
         data: validValues
       };
-    case "payroll-setup":
+    case "payroll-setup": {
+      const raw = String(validValues.bankAccountNumber ?? "");
       return {
         success: true,
         status: 201,
-        message: "Payroll profile saved.",
-        data: validValues
+        message: "Platni profil je sačuvan.",
+        data: {
+          ...validValues,
+          bankAccountNumber: raw.startsWith("0") ? raw.slice(1) : raw
+        }
       };
+    }
     case "benefits-enrollment":
       return {
-        success: true,
-        status: 201,
-        message: "Benefits enrollment saved.",
-        data: validValues
+        success: false,
+        status: 409,
+        message: "ERROR",
+        data: "ERROR"
       };
     case "system-access-request":
       return {
         success: true,
         status: 201,
-        message: "Access request submitted.",
-        data: {
-          ...validValues,
-          requestedSystems: Array.isArray(validValues.requestedSystems)
-            ? validValues.requestedSystems.slice(0, Math.max(validValues.requestedSystems.length - 1, 1))
-            : validValues.requestedSystems
-        }
+        message: "Zahtev za pristup je poslat.",
+        data: validValues
       };
   }
 }

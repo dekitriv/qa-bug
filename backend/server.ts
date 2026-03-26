@@ -54,9 +54,29 @@ const corsOptions: cors.CorsOptions = {
   }
 };
 
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+const corsMiddleware = cors(corsOptions);
+
 app.use(express.json());
+
+/** Za ovaj endpoint namerno ne primenjujemo CORS — u dev-u, kada front šalje cross-origin zahtev, pregledač blokira odgovor (CORS). */
+function isSystemAccessSubmit(req: express.Request) {
+  return (
+    req.path === "/api/forms/system-access-request/submit" &&
+    (req.method === "POST" || req.method === "OPTIONS")
+  );
+}
+
+app.use((req, res, next) => {
+  if (isSystemAccessSubmit(req)) {
+    next();
+    return;
+  }
+  corsMiddleware(req, res, next);
+});
+
+app.options("/api/forms/system-access-request/submit", (_req, res) => {
+  res.sendStatus(204);
+});
 
 function respond<T>(res: express.Response, payload: ApiResponse<T>) {
   return res.status(payload.status).json(payload);

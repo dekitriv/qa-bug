@@ -3,39 +3,38 @@ import type { PublicFormSummary } from "@shared/types";
 export const adminNavigation: PublicFormSummary[] = [
   {
     slug: "personal-profile",
-    title: "Personal Profile",
-    description: "Basic employee profile",
-    progressLabel: "Step 1 of 6"
+    title: "Lični profil",
+    description: "Osnovni profil zaposlenog",
+    progressLabel: "Korak 1 od 6"
   },
   {
     slug: "emergency-contact",
-    title: "Emergency Contact",
-    description: "Emergency contact details",
-    progressLabel: "Step 2 of 6"
+    title: "Kontakt u hitnim slučajevima",
+    description: "Kontakt za hitne slučajeve",
+    progressLabel: "Korak 2 od 6"
   },
   {
     slug: "job-assignment",
-    title: "Job Assignment",
-    description: "Department and manager setup",
-    progressLabel: "Step 3 of 6"
+    title: "Dodela posla",
+    description: "Odeljenje i menadžer",
+    progressLabel: "Korak 3 od 6"
   },
   {
     slug: "payroll-setup",
-    title: "Payroll Setup",
-    description: "Banking and payroll setup",
-    progressLabel: "Step 4 of 6"
+    title: "Plata i obračun",
+    description: "Banka i broj računa",
+    progressLabel: "Korak 4 od 6"
   },
   {
     slug: "benefits-enrollment",
-    title: "Benefits Enrollment",
-    description: "Coverage and dependents",
-    progressLabel: "Step 5 of 6"
+    title: "Benefiti",
+    description: "Pokrivenost i članovi porodice",
+    progressLabel: "Korak 5 od 6"
   },
   {
     slug: "system-access-request",
-    title: "System Access Request",
-    description: "Tool and permission request",
-    progressLabel: "Step 6 of 6"
+    title: "Zahtev za pristup sistemima",
+    description: "Alati i dozvole",
+    progressLabel: "Korak 6 od 6"
   }
 ];
-

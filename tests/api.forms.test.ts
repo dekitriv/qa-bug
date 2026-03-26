@@ -36,28 +36,52 @@ describe("scenario api logic", () => {
 
     expect(result.status).toBe(422);
     expect(result.success).toBe(false);
-    expect(result.data?.phone).toEqual(["Enter a valid Serbian mobile number."]);
+    expect(result.data?.phone).toEqual(["Unesite validan srpski mobilni broj."]);
   });
 
-  it("drops one requested system on the backend for system access", () => {
+  it("returns validation error when job assignment payload omits attachment filename", () => {
+    const result = runSubmission("job-assignment", {
+      department: "operations",
+      employmentType: "full-time",
+      manager: "Luka Savić",
+      floor: "4"
+    });
+
+    expect(result.status).toBe(422);
+    expect(result.success).toBe(false);
+    expect((result.data as Record<string, string[]>).attachmentFileName?.[0]).toMatch(/Priložite PDF dokument ugovora/);
+  });
+
+  it("returns 409 with ERROR for benefits enrollment", () => {
+    const result = runSubmission("benefits-enrollment", {
+      coverageTier: "family",
+      coverageStart: "2026-04-14",
+      dependents: "Petar Jovanovic"
+    });
+
+    expect(result.status).toBe(409);
+    expect(result.success).toBe(false);
+    expect(result.message).toBe("ERROR");
+    expect(result.data).toBe("ERROR");
+  });
+
+  it("returns all requested systems for system access submit", () => {
     const result = runSubmission("system-access-request", {
       roleProfile: "analyst",
       requestedSystems: ["google-workspace", "jira", "notion"],
-      notes: "Standard onboarding bundle plus analytics workspace access."
+      notes: ""
     });
 
     expect(result.status).toBe(201);
     expect(result.success).toBe(true);
-    expect((result.data as { requestedSystems: string[] }).requestedSystems).toHaveLength(2);
+    expect((result.data as { requestedSystems: string[] }).requestedSystems).toHaveLength(3);
   });
 
-  it("creates a details token and fetches saved details from it", () => {
+  it("returns payroll details with leading zero swallowed on the saved account number", () => {
     const submitResult = submitFormResponse("payroll-setup", {
       values: {
         bankName: "Banca Intesa",
-        bankAccountNumber: "0600123400019988",
-        taxNumber: "18394721",
-        notes: "Priority setup for the April payroll cutoff."
+        bankAccountNumber: "0600123400019988"
       }
     });
 
@@ -69,6 +93,6 @@ describe("scenario api logic", () => {
 
     expect(detailsResult.success).toBe(true);
     expect(detailsResult.status).toBe(200);
-    expect((detailsResult.data as { record: { bankAccountNumber: string } }).record.bankAccountNumber).toBe("0600123400019988");
+    expect((detailsResult.data as { record: { bankAccountNumber: string } }).record.bankAccountNumber).toBe("600123400019988");
   });
 });

@@ -21,15 +21,15 @@ export function AdminLayout({
         <Link to="/" className="brand-box">
           <div className="brand-mark">Q</div>
           <div>
-            <p className="brand-title">QA Forms Lab</p>
-            <p className="brand-subtitle">Training Console</p>
+            <p className="brand-title">QA Lab — formulari</p>
+            <p className="brand-subtitle">Konzola za obuku</p>
           </div>
         </Link>
 
         <div className="sidebar-section">
           <p className="sidebar-label">Onboarding</p>
           <NavLink to="/" end className={({ isActive }) => clsx("sidebar-link", isActive && "active")}>
-            Overview
+            Pregled
           </NavLink>
           {adminNavigation.map((item) => (
             <NavLink
@@ -46,7 +46,7 @@ export function AdminLayout({
           <div className="user-chip">QA</div>
           <div>
             <p className="footer-title">qa.operator</p>
-            <p className="footer-subtitle">Software Admin</p>
+            <p className="footer-subtitle">Softver admin</p>
           </div>
         </div>
       </aside>

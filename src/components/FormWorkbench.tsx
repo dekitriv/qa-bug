@@ -1,10 +1,10 @@
 import clsx from "clsx";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { submitForm } from "@/lib/api";
-import { applyClientBugTransform, createClientBugRefs } from "@/lib/clientBugs";
+import { applyClientBugTransform } from "@/lib/clientBugs";
 import { cloneValues } from "@/lib/utils";
 import type { FieldConfig, FormScenario } from "@shared/types";
 
@@ -13,22 +13,44 @@ function FieldRenderer({
   register,
   error,
   values,
-  onStaleSelectChange
+  setValue
 }: {
   field: FieldConfig;
   register: ReturnType<typeof useForm<Record<string, unknown>>>["register"];
   error?: string;
   values: Record<string, unknown>;
-  onStaleSelectChange: (fieldName: string, nextValue: string) => void;
+  setValue: ReturnType<typeof useForm<Record<string, unknown>>>["setValue"];
 }) {
   if (field.showWhen && values[field.showWhen.field] !== field.showWhen.equals) {
     return null;
   }
 
+  const requiredMsg = field.required ? `${field.label} je obavezno polje.` : false;
+
+  if (field.type === "file") {
+    return (
+      <label className={clsx("field-shell", !field.halfWidth && "full")}>
+        <span className="eyebrow">{field.label}</span>
+        <input type="hidden" {...register(field.name, { required: requiredMsg })} />
+        <input
+          type="file"
+          accept=".pdf,application/pdf"
+          aria-label={field.label}
+          className="file-input"
+          onChange={(event) => {
+            const file = event.target.files?.[0];
+            setValue(field.name, file?.name ?? "", { shouldValidate: true });
+          }}
+        />
+        {field.helperText ? <span className="helper-text">{field.helperText}</span> : null}
+        {error ? <span className="field-error">{error}</span> : null}
+      </label>
+    );
+  }
+
   if (field.type === "select") {
     const registered = register(field.name, {
-      required: field.required ? `${field.label} is required.` : false,
-      onChange: (event) => onStaleSelectChange(field.name, event.target.value)
+      required: requiredMsg
     });
 
     return (
@@ -51,10 +73,7 @@ function FieldRenderer({
     return (
       <label className={clsx("field-shell", !field.halfWidth && "full")}>
         <span className="eyebrow">{field.label}</span>
-        <textarea
-          aria-label={field.label}
-          {...register(field.name, { required: field.required ? `${field.label} is required.` : false })}
-        />
+        <textarea aria-label={field.label} {...register(field.name, { required: requiredMsg })} />
         {field.helperText ? <span className="helper-text">{field.helperText}</span> : null}
         {error ? <span className="field-error">{error}</span> : null}
       </label>
@@ -73,7 +92,7 @@ function FieldRenderer({
               <input
                 type="checkbox"
                 value={option.value}
-                {...register(field.name, { required: field.required ? `${field.label} is required.` : false })}
+                {...register(field.name, { required: requiredMsg })}
                 defaultChecked={selected.includes(option.value)}
               />
               <span>{option.label}</span>
@@ -91,7 +110,7 @@ function FieldRenderer({
       <input
         type={field.type}
         aria-label={field.label}
-        {...register(field.name, { required: field.required ? `${field.label} is required.` : false })}
+        {...register(field.name, { required: requiredMsg })}
       />
       {field.helperText ? <span className="helper-text">{field.helperText}</span> : null}
       {error ? <span className="field-error">{error}</span> : null}
@@ -103,14 +122,16 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
   const navigate = useNavigate();
   const [serverErrorBanner, setServerErrorBanner] = useState<string | null>(null);
   const [serverSuccessBanner, setServerSuccessBanner] = useState<string | null>(null);
-  const clientBugRefs = useRef(createClientBugRefs(scenario));
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    control
+    control,
+    setError,
+    clearErrors,
+    setValue
   } = useForm<Record<string, unknown>>({
     defaultValues: cloneValues(scenario.initialValues)
   });
@@ -120,11 +141,29 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
   async function onSubmit(values: Record<string, unknown>) {
     setServerErrorBanner(null);
     setServerSuccessBanner(null);
+    clearErrors();
     try {
-      const buggedValues = applyClientBugTransform(scenario.slug, values, clientBugRefs.current);
+      const buggedValues = applyClientBugTransform(scenario.slug, values);
       const { ok, body } = await submitForm(scenario.slug, { values: buggedValues });
 
       if (!ok) {
+        if (
+          scenario.slug === "job-assignment" &&
+          body.status === 422 &&
+          body.data &&
+          typeof body.data === "object" &&
+          !Array.isArray(body.data)
+        ) {
+          const fieldErrors = body.data as Record<string, string[] | string>;
+          for (const [key, val] of Object.entries(fieldErrors)) {
+            if (key === "non_field_errors") {
+              continue;
+            }
+            if (Array.isArray(val) && val[0]) {
+              setError(key, { message: val[0] });
+            }
+          }
+        }
         setServerErrorBanner(body.message);
         return;
       }
@@ -136,30 +175,19 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
           : null;
 
       if (!recordToken) {
-        setServerErrorBanner("Saved details token was not returned by the backend.");
+        setServerErrorBanner("Bekend nije vratio token sačuvanih detalja.");
         return;
       }
 
       navigate(`/forms/${scenario.slug}/details?token=${encodeURIComponent(recordToken)}`);
-    } catch {
-      setServerErrorBanner("The backend request failed before a response was returned.");
-    }
+    } catch {}
   }
 
   function handleReset() {
     reset(cloneValues(scenario.initialValues));
-    clientBugRefs.current = createClientBugRefs(scenario);
+    clearErrors();
     setServerErrorBanner(null);
     setServerSuccessBanner(null);
-  }
-
-  function handleStaleSelectChange(fieldName: string, nextValue: string) {
-    if (scenario.slug !== "job-assignment") {
-      return;
-    }
-
-    const currentVisibleValue = currentValues[fieldName];
-    clientBugRefs.current.jobAssignmentShadow[fieldName] = currentVisibleValue ?? nextValue;
   }
 
   return (
@@ -169,20 +197,12 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
           <div className="card-head">
             <div>
               <p className="section-title">{scenario.title}</p>
-              <p className="section-subtitle">{scenario.overview}</p>
+              {scenario.overview ? <p className="section-subtitle">{scenario.overview}</p> : null}
             </div>
             <div className="expect-chip">{scenario.progressLabel}</div>
           </div>
 
           <div className="card-content">
-            <div className="soft-panel">
-              <p className="soft-panel-title">QA note</p>
-              <p className="soft-panel-text">
-                Open browser Network, submit the form, and inspect the request or response there. The page stays simple
-                on purpose.
-              </p>
-            </div>
-
             {serverErrorBanner ? <div className="alert">{serverErrorBanner}</div> : null}
             {serverSuccessBanner ? <div className="success-alert">{serverSuccessBanner}</div> : null}
 
@@ -194,15 +214,15 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
                   register={register}
                   error={errors[field.name]?.message as string | undefined}
                   values={currentValues}
-                  onStaleSelectChange={handleStaleSelectChange}
+                  setValue={setValue}
                 />
               ))}
               <div className="actions simple-actions" style={{ gridColumn: "1 / -1" }}>
                 <button type="submit" disabled={isSubmitting} className="primary-btn blue-btn">
-                  {isSubmitting ? "Saving..." : scenario.submitLabel}
+                  {isSubmitting ? "Čuvanje…" : scenario.submitLabel}
                 </button>
                 <button type="button" onClick={handleReset} className="secondary-btn">
-                  Reset
+                  Resetuj
                 </button>
               </div>
             </form>

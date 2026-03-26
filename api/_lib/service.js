@@ -14,11 +14,11 @@ const scenarios = [
   {
     slug: "personal-profile",
     title: "Personal Profile",
-    description: "Basic employee profile",
+    description: "",
     progressLabel: "Step 1 of 6",
-    overview: "Mila is starting on April 14. Review the profile and submit the onboarding record.",
+    overview: "",
     submitLabel: "Create employee profile",
-    expectedOutcome: "A new onboarding profile should be created and returned by the backend.",
+    expectedOutcome: "",
     fields: [
       { name: "employeeId", label: "Employee ID", type: "text", required: true, halfWidth: true },
       { name: "fullName", label: "Full name", type: "text", required: true, halfWidth: true },
@@ -35,35 +35,36 @@ const scenarios = [
   },
   {
     slug: "emergency-contact",
-    title: "Emergency Contact",
-    description: "Emergency contact details",
-    progressLabel: "Step 2 of 6",
-    overview: "The backend should reject malformed phone numbers and guide QA to the exact field.",
-    submitLabel: "Save emergency contact",
-    expectedOutcome: "Any phone validation error should appear inline on the phone field.",
+    title: "Kontakt u hitnim slučajevima",
+    description: "",
+    progressLabel: "Korak 2 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj kontakt u hitnim slučajevima",
+    expectedOutcome: "",
     fields: [
-      { name: "contactName", label: "Contact name", type: "text", required: true, halfWidth: true },
+      { name: "contactName", label: "Ime kontakta", type: "text", required: true, halfWidth: true },
       {
         name: "relationship",
-        label: "Relationship",
+        label: "Srodstvo / odnos",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Parent", value: "parent" },
-          { label: "Partner", value: "partner" },
-          { label: "Sibling", value: "sibling" }
+          { label: "Roditelj", value: "parent" },
+          { label: "Partner / partnerka", value: "partner" },
+          { label: "Brat / sestra", value: "sibling" }
         ]
       },
       {
         name: "phone",
-        label: "Mobile phone",
+        label: "Mobilni telefon",
         type: "tel",
         required: true,
-        helperText: "Use a Serbian mobile number such as 0612345678.",
+        helperText:
+          "Format: 06 i još 7 ili 8 cifara (npr. 0612345678). Ne unosite razmake, crtice ni +381.",
         halfWidth: true
       },
-      { name: "email", label: "Email", type: "email", required: true, halfWidth: true }
+      { name: "email", label: "Imejl", type: "email", required: true, halfWidth: true }
     ],
     initialValues: {
       contactName: "Ana Jovanovic",
@@ -74,66 +75,70 @@ const scenarios = [
   },
   {
     slug: "job-assignment",
-    title: "Job Assignment",
-    description: "Department and manager setup",
-    progressLabel: "Step 3 of 6",
-    overview: "QA should be able to change assignment values and trust that the submitted payload matches the screen.",
-    submitLabel: "Save job assignment",
-    expectedOutcome: "The saved assignment should reflect the latest visible selections.",
+    title: "Dodela posla",
+    description: "",
+    progressLabel: "Korak 3 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj dodelu posla",
+    expectedOutcome: "",
     fields: [
       {
         name: "department",
-        label: "Department",
+        label: "Odeljenje",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Operations", value: "operations" },
-          { label: "Design Ops", value: "design-ops" },
-          { label: "Product Strategy", value: "product-strategy" }
+          { label: "Operacije", value: "operations" },
+          { label: "Design ops", value: "design-ops" },
+          { label: "Produkt strategija", value: "product-strategy" }
         ]
       },
       {
         name: "employmentType",
-        label: "Employment type",
+        label: "Tip angažovanja",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Full-time", value: "full-time" },
-          { label: "Contractor", value: "contractor" },
-          { label: "Temporary", value: "temporary" }
+          { label: "Puno radno vreme", value: "full-time" },
+          { label: "Honorarac / kontraktor", value: "contractor" },
+          { label: "Privremeno", value: "temporary" }
         ]
       },
-      { name: "manager", label: "Manager", type: "text", required: true, halfWidth: true },
-      { name: "floor", label: "Floor zone", type: "text", required: true, halfWidth: true }
+      { name: "manager", label: "Menadžer", type: "text", required: true, halfWidth: true },
+      { name: "floor", label: "Sprat / zona", type: "text", required: true, halfWidth: true },
+      {
+        name: "attachmentFileName",
+        label: "Ugovor o radu (PDF)",
+        type: "file",
+        required: true,
+        halfWidth: false
+      }
     ],
     initialValues: {
       department: "operations",
       employmentType: "full-time",
-      manager: "Luka Savic",
-      floor: "North Wing / Level 4"
+      manager: "Luka Savić",
+      floor: "Severno krilo / sprat 4",
+      attachmentFileName: ""
     }
   },
   {
     slug: "payroll-setup",
-    title: "Payroll Setup",
-    description: "Banking and payroll setup",
-    progressLabel: "Step 4 of 6",
-    overview: "Financial identifiers must survive submit exactly as entered, including leading zeroes.",
-    submitLabel: "Save payroll profile",
-    expectedOutcome: "The saved account number should match the visible field exactly.",
+    title: "Plata i obračun",
+    description: "",
+    progressLabel: "Korak 4 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj platni profil",
+    expectedOutcome: "",
     fields: [
-      { name: "bankName", label: "Bank name", type: "text", required: true, halfWidth: true },
-      { name: "bankAccountNumber", label: "Account number", type: "text", required: true, halfWidth: true },
-      { name: "taxNumber", label: "Tax number", type: "text", required: true, halfWidth: true },
-      { name: "notes", label: "Payroll notes", type: "textarea", halfWidth: false }
+      { name: "bankName", label: "Naziv banke", type: "text", required: true, halfWidth: true },
+      { name: "bankAccountNumber", label: "Broj računa", type: "text", required: true, halfWidth: true }
     ],
     initialValues: {
       bankName: "Banca Intesa",
-      bankAccountNumber: "0600123400019988",
-      taxNumber: "18394721",
-      notes: "Priority setup for the April payroll cutoff."
+      bankAccountNumber: "0600123400019988"
     }
   },
   {
@@ -178,11 +183,11 @@ const scenarios = [
   {
     slug: "system-access-request",
     title: "System Access Request",
-    description: "Tool and permission request",
+    description: "",
     progressLabel: "Step 6 of 6",
-    overview: "All selected systems should be preserved in the saved result after submit.",
+    overview: "",
     submitLabel: "Provision access",
-    expectedOutcome: "Every selected system should be present in the saved access request.",
+    expectedOutcome: "",
     fields: [
       {
         name: "roleProfile",
@@ -213,7 +218,7 @@ const scenarios = [
     initialValues: {
       roleProfile: "analyst",
       requestedSystems: ["google-workspace", "jira", "notion"],
-      notes: "Standard onboarding bundle plus analytics workspace access."
+      notes: ""
     }
   }
 ];
@@ -232,20 +237,24 @@ const submitSchemas = {
   "emergency-contact": z.object({
     contactName: z.string().min(1),
     relationship: z.string().min(1),
-    phone: z.string().regex(serbianPhoneRegex, "Enter a valid Serbian mobile number."),
+    phone: z.string().regex(serbianPhoneRegex, "Unesite validan srpski mobilni broj."),
     email: z.string().email()
   }),
   "job-assignment": z.object({
     department: z.string().min(1),
     employmentType: z.string().min(1),
     manager: z.string().min(1),
-    floor: z.string().min(1)
+    floor: z.string().min(1),
+    attachmentFileName: z
+      .string({
+        required_error: "Priložite PDF dokument ugovora o radu.",
+        invalid_type_error: "Priložite PDF dokument ugovora o radu."
+      })
+      .min(1, "Priložite PDF dokument ugovora o radu.")
   }),
   "payroll-setup": z.object({
     bankName: z.string().min(1),
-    bankAccountNumber: z.string().min(1),
-    taxNumber: z.string().min(1),
-    notes: z.string().optional().default("")
+    bankAccountNumber: z.string().min(1)
   }),
   "benefits-enrollment": z.object({
     coverageTier: z.string().min(1),
@@ -399,17 +408,34 @@ export function submitFormResponse(slug, payload) {
         data: null
       };
       break;
+    case "payroll-setup": {
+      const raw = String(validValues.bankAccountNumber ?? "");
+      const swallowed = raw.startsWith("0") ? raw.slice(1) : raw;
+      result = {
+        success: true,
+        status: 201,
+        message: "Platni profil je sačuvan.",
+        data: {
+          ...validValues,
+          bankAccountNumber: swallowed
+        }
+      };
+      break;
+    }
+    case "benefits-enrollment":
+      result = {
+        success: false,
+        status: 409,
+        message: "ERROR",
+        data: "ERROR"
+      };
+      break;
     case "system-access-request":
       result = {
         success: true,
         status: 201,
         message: "Access request submitted.",
-        data: {
-          ...validValues,
-          requestedSystems: Array.isArray(validValues.requestedSystems)
-            ? validValues.requestedSystems.slice(0, Math.max(validValues.requestedSystems.length - 1, 1))
-            : validValues.requestedSystems
-        }
+        data: validValues
       };
       break;
     default:
@@ -421,9 +447,7 @@ export function submitFormResponse(slug, payload) {
             ? "Emergency contact saved."
             : slug === "job-assignment"
               ? "Job assignment saved."
-              : slug === "payroll-setup"
-                ? "Payroll profile saved."
-                : "Benefits enrollment saved.",
+              : "Benefits enrollment saved.",
         data: validValues
       };
       break;

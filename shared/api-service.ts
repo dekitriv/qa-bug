@@ -7,7 +7,7 @@ export function unsupportedMethodResponse(): ApiResponse<null> {
   return {
     success: false,
     status: 405,
-    message: "Method not allowed.",
+    message: "Metoda nije dozvoljena.",
     data: null
   };
 }
@@ -16,7 +16,7 @@ export function getFormsResponse() {
   return {
     success: true,
     status: 200,
-    message: "Forms fetched successfully.",
+    message: "Formulari su učitani.",
     data: {
       forms: listPublicForms()
     }
@@ -30,7 +30,7 @@ export function getFormResponse(slug: string) {
     return {
       success: false,
       status: 404,
-      message: "Resource not found.",
+      message: "Resurs nije pronađen.",
       data: null
     } satisfies ApiResponse<null>;
   }
@@ -38,7 +38,7 @@ export function getFormResponse(slug: string) {
   return {
     success: true,
     status: 200,
-    message: "Form fetched successfully.",
+    message: "Formular je učitan.",
     data: {
       form: scenario
     }
@@ -52,25 +52,25 @@ export function getFormDetailsResponse(slug: string, token: string | null) {
     return {
       success: false,
       status: 404,
-      message: "Resource not found.",
+      message: "Resurs nije pronađen.",
       data: null
     } satisfies ApiResponse<null>;
   }
 
   if (!token) {
-    return buildNonFieldValidationError("Saved details token is missing.");
+    return buildNonFieldValidationError("Nedostaje token sačuvanih detalja.");
   }
 
   const record = parseDetailsToken(token, scenario.slug);
 
   if (!record) {
-    return buildNonFieldValidationError("Saved details token is invalid.");
+    return buildNonFieldValidationError("Token sačuvanih detalja nije validan.");
   }
 
   return {
     success: true,
     status: 200,
-    message: "Details fetched successfully.",
+    message: "Detalji su učitani.",
     data: {
       record
     }
@@ -84,7 +84,7 @@ export function submitFormResponse(slug: string, payload: SubmitPayload | { valu
     return {
       success: false,
       status: 404,
-      message: "Resource not found.",
+      message: "Resurs nije pronađen.",
       data: null
     } satisfies ApiResponse<null>;
   }

@@ -60,7 +60,9 @@ export default function DashboardPage() {
                     {String(index + 1).padStart(2, "0")}
                   </span>
                 </div>
-                <p className="mt-5 max-w-sm text-sm leading-6 text-slate">{form.description}</p>
+                {form.description ? (
+                  <p className="mt-5 max-w-sm text-sm leading-6 text-slate">{form.description}</p>
+                ) : null}
                 <div className="mt-8 flex items-center justify-between border-t border-ink/10 pt-4">
                   <span className="font-mono text-[11px] uppercase tracking-[0.24em] text-rust">Open form</span>
                   <span className="text-sm text-ink transition group-hover:translate-x-1">Inspect →</span>

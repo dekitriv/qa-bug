@@ -13,7 +13,8 @@ export type FieldType =
   | "date"
   | "select"
   | "textarea"
-  | "multiselect";
+  | "multiselect"
+  | "file";
 
 export interface FieldOption {
   label: string;

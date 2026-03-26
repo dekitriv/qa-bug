@@ -8,63 +8,64 @@ const baseEmployee = {
   employeeId: "HR-2026-041",
   fullName: "Mila Jovanovic",
   email: "mila.jovanovic@northgate.example",
-  office: "Belgrade HQ"
+  office: "Beograd — sedište"
 };
 
 const scenarios: FormScenario[] = [
   {
     slug: "personal-profile",
-    title: "Personal Profile",
-    description: "Create the starter employee profile with contact and role basics.",
-    progressLabel: "Step 1 of 6",
-    overview: "Mila is starting on April 14. Review the profile and submit the onboarding record.",
-    submitLabel: "Create employee profile",
-    expectedOutcome: "A new onboarding profile should be created and returned by the backend.",
+    title: "Lični profil",
+    description: "",
+    progressLabel: "Korak 1 od 6",
+    overview: "",
+    submitLabel: "Kreiraj profil zaposlenog",
+    expectedOutcome: "",
     fields: [
-      { name: "employeeId", label: "Employee ID", type: "text", required: true, halfWidth: true },
-      { name: "fullName", label: "Full name", type: "text", required: true, halfWidth: true },
-      { name: "email", label: "Work email", type: "email", required: true, halfWidth: true },
-      { name: "title", label: "Job title", type: "text", required: true, halfWidth: true },
-      { name: "startDate", label: "Start date", type: "date", required: true, halfWidth: true },
-      { name: "office", label: "Office", type: "text", required: true, halfWidth: true }
+      { name: "employeeId", label: "ID zaposlenog", type: "text", required: true, halfWidth: true },
+      { name: "fullName", label: "Ime i prezime", type: "text", required: true, halfWidth: true },
+      { name: "email", label: "Poslovni imejl", type: "email", required: true, halfWidth: true },
+      { name: "title", label: "Radno mesto / naziv", type: "text", required: true, halfWidth: true },
+      { name: "startDate", label: "Datum početka", type: "date", required: true, halfWidth: true },
+      { name: "office", label: "Kancelarija / lokacija", type: "text", required: true, halfWidth: true }
     ],
     initialValues: {
       ...baseEmployee,
-      title: "Senior Product Analyst",
+      title: "Stariji produkt analitičar",
       startDate: "2026-04-14"
     }
   },
   {
     slug: "emergency-contact",
-    title: "Emergency Contact",
-    description: "Capture Mila's emergency contact details before account activation.",
-    progressLabel: "Step 2 of 6",
-    overview: "The backend should reject malformed phone numbers and guide QA to the exact field.",
-    submitLabel: "Save emergency contact",
-    expectedOutcome: "Any phone validation error should appear inline on the phone field.",
+    title: "Kontakt u hitnim slučajevima",
+    description: "",
+    progressLabel: "Korak 2 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj kontakt u hitnim slučajevima",
+    expectedOutcome: "",
     fields: [
-      { name: "contactName", label: "Contact name", type: "text", required: true, halfWidth: true },
+      { name: "contactName", label: "Ime kontakta", type: "text", required: true, halfWidth: true },
       {
         name: "relationship",
-        label: "Relationship",
+        label: "Srodstvo / odnos",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Parent", value: "parent" },
-          { label: "Partner", value: "partner" },
-          { label: "Sibling", value: "sibling" }
+          { label: "Roditelj", value: "parent" },
+          { label: "Partner / partnerka", value: "partner" },
+          { label: "Brat / sestra", value: "sibling" }
         ]
       },
       {
         name: "phone",
-        label: "Mobile phone",
+        label: "Mobilni telefon",
         type: "tel",
         required: true,
-        helperText: "Use a Serbian mobile number such as 0612345678.",
+        helperText:
+          "Format: 06 i još 7 ili 8 cifara (npr. 0612345678). Ne unosite razmake, crtice ni +381.",
         halfWidth: true
       },
-      { name: "email", label: "Email", type: "email", required: true, halfWidth: true }
+      { name: "email", label: "Imejl", type: "email", required: true, halfWidth: true }
     ],
     initialValues: {
       contactName: "Ana Jovanovic",
@@ -75,95 +76,99 @@ const scenarios: FormScenario[] = [
   },
   {
     slug: "job-assignment",
-    title: "Job Assignment",
-    description: "Assign team, manager, and employment type for Mila's first day.",
-    progressLabel: "Step 3 of 6",
-    overview: "QA should be able to change assignment values and trust that the submitted payload matches the screen.",
-    submitLabel: "Save job assignment",
-    expectedOutcome: "The saved assignment should reflect the latest visible selections.",
+    title: "Dodela posla",
+    description: "",
+    progressLabel: "Korak 3 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj dodelu posla",
+    expectedOutcome: "",
     fields: [
       {
         name: "department",
-        label: "Department",
+        label: "Odeljenje",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Operations", value: "operations" },
-          { label: "Design Ops", value: "design-ops" },
-          { label: "Product Strategy", value: "product-strategy" }
+          { label: "Operacije", value: "operations" },
+          { label: "Design ops", value: "design-ops" },
+          { label: "Produkt strategija", value: "product-strategy" }
         ]
       },
       {
         name: "employmentType",
-        label: "Employment type",
+        label: "Tip angažovanja",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Full-time", value: "full-time" },
-          { label: "Contractor", value: "contractor" },
-          { label: "Temporary", value: "temporary" }
+          { label: "Puno radno vreme", value: "full-time" },
+          { label: "Honorarac / kontraktor", value: "contractor" },
+          { label: "Privremeno", value: "temporary" }
         ]
       },
-      { name: "manager", label: "Manager", type: "text", required: true, halfWidth: true },
-      { name: "floor", label: "Floor zone", type: "text", required: true, halfWidth: true }
+      { name: "manager", label: "Menadžer", type: "text", required: true, halfWidth: true },
+      { name: "floor", label: "Sprat / zona", type: "text", required: true, halfWidth: true },
+      {
+        name: "attachmentFileName",
+        label: "Ugovor o radu (PDF)",
+        type: "file",
+        required: true,
+        halfWidth: false
+      }
     ],
     initialValues: {
       department: "operations",
       employmentType: "full-time",
-      manager: "Luka Savic",
-      floor: "North Wing / Level 4"
+      manager: "Luka Savić",
+      floor: "Severno krilo / sprat 4",
+      attachmentFileName: ""
     }
   },
   {
     slug: "payroll-setup",
-    title: "Payroll Setup",
-    description: "Record bank and tax details for the first payroll run.",
-    progressLabel: "Step 4 of 6",
-    overview: "Financial identifiers must survive submit exactly as entered, including leading zeroes.",
-    submitLabel: "Save payroll profile",
-    expectedOutcome: "The saved account number should match the visible field exactly.",
+    title: "Plata i obračun",
+    description: "",
+    progressLabel: "Korak 4 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj platni profil",
+    expectedOutcome: "",
     fields: [
-      { name: "bankName", label: "Bank name", type: "text", required: true, halfWidth: true },
-      { name: "bankAccountNumber", label: "Account number", type: "text", required: true, halfWidth: true },
-      { name: "taxNumber", label: "Tax number", type: "text", required: true, halfWidth: true },
-      { name: "notes", label: "Payroll notes", type: "textarea", halfWidth: false }
+      { name: "bankName", label: "Naziv banke", type: "text", required: true, halfWidth: true },
+      { name: "bankAccountNumber", label: "Broj računa", type: "text", required: true, halfWidth: true }
     ],
     initialValues: {
       bankName: "Banca Intesa",
-      bankAccountNumber: "0600123400019988",
-      taxNumber: "18394721",
-      notes: "Priority setup for the April payroll cutoff."
+      bankAccountNumber: "0600123400019988"
     }
   },
   {
     slug: "benefits-enrollment",
-    title: "Benefits Enrollment",
-    description: "Configure medical coverage and dependent information.",
-    progressLabel: "Step 5 of 6",
-    overview: "Family coverage should preserve dependent data and submit it for review.",
-    submitLabel: "Save benefits enrollment",
-    expectedOutcome: "Dependents should remain attached whenever family coverage is selected.",
+    title: "Benefiti",
+    description: "",
+    progressLabel: "Korak 5 od 6",
+    overview: "",
+    submitLabel: "Sačuvaj benefite",
+    expectedOutcome: "",
     fields: [
       {
         name: "coverageTier",
-        label: "Coverage tier",
+        label: "Nivo pokrivenosti",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Single", value: "single" },
-          { label: "Family", value: "family" },
-          { label: "Employee + partner", value: "partner" }
+          { label: "Pojedinac", value: "single" },
+          { label: "Porodica", value: "family" },
+          { label: "Zaposleni + partner", value: "partner" }
         ]
       },
-      { name: "coverageStart", label: "Coverage start", type: "date", required: true, halfWidth: true },
+      { name: "coverageStart", label: "Početak pokrivenosti", type: "date", required: true, halfWidth: true },
       {
         name: "dependents",
-        label: "Dependents",
+        label: "Članovi porodice (zavisni)",
         type: "textarea",
-        helperText: "List each dependent on a new line.",
+        helperText: "Svakog člana navedite u novom redu.",
         showWhen: {
           field: "coverageTier",
           equals: "family"
@@ -178,28 +183,28 @@ const scenarios: FormScenario[] = [
   },
   {
     slug: "system-access-request",
-    title: "System Access Request",
-    description: "Grant the core tools Mila needs on day one.",
-    progressLabel: "Step 6 of 6",
-    overview: "All selected systems should be preserved in the saved result after submit.",
-    submitLabel: "Provision access",
-    expectedOutcome: "Every selected system should be present in the saved access request.",
+    title: "Zahtev za pristup sistemima",
+    description: "",
+    progressLabel: "Korak 6 od 6",
+    overview: "",
+    submitLabel: "Podnesi zahtev za pristup",
+    expectedOutcome: "",
     fields: [
       {
         name: "roleProfile",
-        label: "Role profile",
+        label: "Profil uloge",
         type: "select",
         required: true,
         halfWidth: true,
         options: [
-          { label: "Analyst", value: "analyst" },
-          { label: "Manager", value: "manager" },
-          { label: "Admin", value: "admin" }
+          { label: "Analitičar", value: "analyst" },
+          { label: "Menadžer", value: "manager" },
+          { label: "Administrator", value: "admin" }
         ]
       },
       {
         name: "requestedSystems",
-        label: "Requested systems",
+        label: "Traženi sistemi",
         type: "multiselect",
         required: true,
         options: [
@@ -209,12 +214,12 @@ const scenarios: FormScenario[] = [
           { label: "HubSpot", value: "hubspot" }
         ]
       },
-      { name: "notes", label: "Access notes", type: "textarea" }
+      { name: "notes", label: "Napomene za pristup", type: "textarea" }
     ],
     initialValues: {
       roleProfile: "analyst",
       requestedSystems: ["google-workspace", "jira", "notion"],
-      notes: "Standard onboarding bundle plus analytics workspace access."
+      notes: ""
     }
   }
 ];
@@ -223,74 +228,65 @@ const bugSpecs: BugSpec[] = [
   {
     slug: "personal-profile",
     category: "backend",
-    title: "HTTP 500 on profile creation",
-    summary: "The backend fails during creation and returns no created data.",
-    reproduction: [
-      "Open Personal Profile.",
-      "Submit the prepared data without changing anything.",
-      "Observe the 500 response and missing saved result."
-    ],
-    expectedBehavior: "The backend should create and return the employee profile."
+    title: "HTTP 500 pri kreiranju profila",
+    summary: "Bekend puca pri kreiranju i ne vraća kreirane podatke.",
+    reproduction: ["Otvorite Lični profil.", "Pošaljite pripremljene podatke.", "Posmatrajte 500 odgovor i nedostajući rezultat."],
+    expectedBehavior: "Bekend treba da kreira i vrati profil zaposlenog."
   },
   {
     slug: "emergency-contact",
     category: "frontend",
-    title: "Field validation not shown inline",
-    summary: "The backend returns a field-level phone validation error, but the form does not map it to the phone input.",
-    reproduction: [
-      "Open Emergency Contact.",
-      "Submit the default phone number.",
-      "Observe the generic error message without inline phone feedback."
-    ],
-    expectedBehavior: "The phone field should display the server validation message."
+    title: "Validacija polja nije prikazana inline",
+    summary: "Bekend vraća grešku za telefon, ali forma je ne mapira na input za telefon.",
+    reproduction: ["Otvorite Kontakt u hitnim slučajevima.", "Pošaljite podrazumevani broj telefona.", "Videćete samo generički baner greške."],
+    expectedBehavior: "Polje za telefon treba da prikaže poruku sa servera."
   },
   {
     slug: "job-assignment",
     category: "frontend",
-    title: "Stale assignment payload",
-    summary: "Changing department or employment type updates the screen, but submit sends the previous values.",
+    title: "Ime priloženog fajla ne ide u payload",
+    summary:
+      "Korisnik bira PDF, ali klijent ne šalje ime fajla u zahtevu; vraća se greška validacije. Inline poruka uz polje za fajl radi samo za ovaj scenario.",
     reproduction: [
-      "Open Job Assignment.",
-      "Change department or employment type.",
-      "Submit and compare the visible selections to the submission review."
+      "Otvorite Dodelu posla (korak 3).",
+      "Izaberite PDF uz ostala polja.",
+      "Proverite zahtev i odgovor; forma treba da prikaže grešku uz polje za fajl."
     ],
-    expectedBehavior: "The submitted and saved values should match the latest visible selections."
+    expectedBehavior: "Ime izabranog fajla treba da bude poslato zajedno sa ostalim podacima."
   },
   {
     slug: "payroll-setup",
-    category: "frontend",
-    title: "Leading zero stripped from bank account",
-    summary: "The client normalizes the account number and removes leading zeroes before submit.",
+    category: "backend",
+    title: "Broj računa u detaljima bez vodeće nule",
+    summary:
+      "Zahtev ispravno šalje npr. 0600123400019988; bekend u sačuvanom zapisu vraća 600123400019988 — gubi se prva vodeća nula.",
     reproduction: [
-      "Open Payroll Setup.",
-      "Submit the prepared account number.",
-      "Compare the visible value to the submission review."
+      "Otvorite Platu i obračun.",
+      "Pošaljite sa podrazumevanim brojem računa (u mreži: pun broj kao u formi).",
+      "U detaljima uporedite sačuvani broj sa poslatim."
     ],
-    expectedBehavior: "The submitted account number should match the visible field exactly."
+    expectedBehavior: "Sačuvani broj računa treba da bude isti kao u zahtevu (bez gubitka vodeće nule)."
   },
   {
     slug: "benefits-enrollment",
-    category: "frontend",
-    title: "Dependents dropped for family coverage",
-    summary: "The client clears dependent data even when family coverage is selected.",
-    reproduction: [
-      "Open Benefits Enrollment.",
-      "Keep family coverage selected and submit.",
-      "Observe missing dependent data in the review panel."
-    ],
-    expectedBehavior: "Family coverage should preserve and submit dependent data."
+    category: "backend",
+    title: "HTTP 409 sa telom ERROR",
+    summary: "Slanje benefita vraća status 409; u telu odgovora je string „ERROR“.",
+    reproduction: ["Otvorite Benefite.", "Pošaljite formular.", "U Network tabu proverite status 409 i telo odgovora."],
+    expectedBehavior: "Bekend treba da vrati uspeh (npr. 201) sa smislenom porukom umesto 409 / ERROR."
   },
   {
     slug: "system-access-request",
     category: "backend",
-    title: "Saved access request is incomplete",
-    summary: "The backend acknowledges success but drops one or more requested systems from the saved result.",
+    title: "CORS blokira odgovor na submit (samo lokalni dev)",
+    summary:
+      "Za POST /api/forms/system-access-request/submit bekend ne šalje Access-Control-Allow-Origin. Front u dev-u šalje zahtev sa :5173 na :4000, pa pregledač blokira odgovor (CORS).",
     reproduction: [
-      "Open System Access Request.",
-      "Submit the prepared data.",
-      "Compare selected systems to the saved result."
+      "Pokrenite npm run dev (Vite + Express na 4000).",
+      "Otvorite korak 6 i pošaljite formular.",
+      "U konzoli / Network tabu posmatrajte CORS grešku; zahtev ne uspeva na frontu."
     ],
-    expectedBehavior: "The saved request should keep every selected system."
+    expectedBehavior: "Bekend treba da vrati odgovor sa odgovarajućim CORS zaglavljima za origin fronta."
   }
 ];
 
@@ -328,20 +324,24 @@ export const submitSchemas: Record<FormSlug, z.ZodType<Record<string, unknown>>>
   "emergency-contact": z.object({
     contactName: z.string().min(1),
     relationship: z.string().min(1),
-    phone: z.string().regex(serbianPhoneRegex, "Enter a valid Serbian mobile number."),
+    phone: z.string().regex(serbianPhoneRegex, "Unesite validan srpski mobilni broj."),
     email: z.string().email()
   }),
   "job-assignment": z.object({
     department: z.string().min(1),
     employmentType: z.string().min(1),
     manager: z.string().min(1),
-    floor: z.string().min(1)
+    floor: z.string().min(1),
+    attachmentFileName: z
+      .string({
+        required_error: "Priložite PDF dokument ugovora o radu.",
+        invalid_type_error: "Priložite PDF dokument ugovora o radu."
+      })
+      .min(1, "Priložite PDF dokument ugovora o radu.")
   }),
   "payroll-setup": z.object({
     bankName: z.string().min(1),
-    bankAccountNumber: z.string().min(1),
-    taxNumber: z.string().min(1),
-    notes: z.string().optional().default("")
+    bankAccountNumber: z.string().min(1)
   }),
   "benefits-enrollment": z.object({
     coverageTier: z.string().min(1),
@@ -363,11 +363,10 @@ export function buildValidationError(fieldErrors: Record<string, string>): Submi
   return {
     ok: false,
     status: 400,
-    message: "Validation failed.",
-    reviewNotes: ["The backend rejected the payload because one or more fields are invalid."],
+    message: "Validacija podataka nije uspela.",
+    reviewNotes: ["Bekend je odbio zahtev jer jedno ili više polja nisu validna."],
     submittedData: null,
     savedData: null,
     fieldErrors
-  };
+  } satisfies SubmitResult;
 }
-

@@ -28,10 +28,10 @@ export function runSubmission(slug: FormSlug, values: Record<string, unknown>): 
       return {
         ok: false,
         status: 500,
-        message: "Profile creation failed unexpectedly.",
+        message: "Kreiranje profila nije uspelo (interna greška).",
         reviewNotes: [
-          "The backend returned an internal server error.",
-          "No saved record was returned for review."
+          "Bekend je vratio internu grešku.",
+          "Nije vraćen sačuvan zapis za pregled."
         ],
         submittedData: validValues,
         savedData: null
@@ -40,8 +40,8 @@ export function runSubmission(slug: FormSlug, values: Record<string, unknown>): 
       return {
         ok: true,
         status: 201,
-        message: "Emergency contact saved.",
-        reviewNotes: ["The backend accepted the payload exactly as submitted."],
+        message: "Hitni kontakt je sačuvan.",
+        reviewNotes: ["Bekend je prihvatio payload tačno kako je poslat."],
         submittedData: validValues,
         savedData: validValues
       };
@@ -49,45 +49,45 @@ export function runSubmission(slug: FormSlug, values: Record<string, unknown>): 
       return {
         ok: true,
         status: 201,
-        message: "Job assignment saved.",
-        reviewNotes: ["Compare the submitted payload to the visible form values after you change a selection."],
+        message: "Dodela posla je sačuvana.",
+        reviewNotes: ["Uporedite poslati payload sa vidljivim vrednostima na formularu."],
         submittedData: validValues,
         savedData: validValues
       };
-    case "payroll-setup":
+    case "payroll-setup": {
+      const raw = String(validValues.bankAccountNumber ?? "");
+      const savedAccount = raw.startsWith("0") ? raw.slice(1) : raw;
       return {
         ok: true,
         status: 201,
-        message: "Payroll profile saved.",
-        reviewNotes: ["Financial identifiers should remain byte-for-byte identical after save."],
+        message: "Platni profil je sačuvan.",
+        reviewNotes: ["Broj računa u sačuvanom rezultatu gubi vodeću nulu u odnosu na poslati zahtev."],
         submittedData: validValues,
-        savedData: validValues
+        savedData: {
+          ...validValues,
+          bankAccountNumber: savedAccount
+        }
       };
+    }
     case "benefits-enrollment":
       return {
-        ok: true,
-        status: 201,
-        message: "Benefits enrollment saved.",
-        reviewNotes: ["Family coverage should preserve all dependent information."],
+        ok: false,
+        status: 409,
+        message: "ERROR",
+        reviewNotes: ["Bekend je vratio 409 sa telom „ERROR“."],
         submittedData: validValues,
-        savedData: validValues
+        savedData: null
       };
     case "system-access-request":
       return {
         ok: true,
         status: 201,
-        message: "Access request submitted.",
+        message: "Zahtev za pristup je poslat.",
         reviewNotes: [
-          "The backend summary should reflect every selected system.",
-          "One of the selected systems is missing in the saved result."
+          "U lokalnom dev okruženju submit ide direktno na port 4000; ako bekend ne pošalje CORS zaglavlja, pregledač blokira odgovor."
         ],
         submittedData: validValues,
-        savedData: {
-          ...validValues,
-          requestedSystems: Array.isArray(validValues.requestedSystems)
-            ? validValues.requestedSystems.slice(0, Math.max(validValues.requestedSystems.length - 1, 1))
-            : validValues.requestedSystems
-        }
+        savedData: validValues
       };
   }
 }

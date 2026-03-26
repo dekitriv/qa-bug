@@ -11,11 +11,11 @@ function renderValue(value: unknown) {
   }
 
   if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
+    return value ? "Da" : "Ne";
   }
 
   if (value === null || value === undefined || value === "") {
-    return "/";
+    return "—";
   }
 
   return String(value);
@@ -40,7 +40,7 @@ export function FormDetailsPage() {
     setError(null);
 
     if (!token) {
-      setError("Saved details token is missing.");
+      setError("Nedostaje token sačuvanih detalja.");
       return;
     }
 
@@ -49,18 +49,18 @@ export function FormDetailsPage() {
         setScenario(formResponse.form);
         setRecord(detailsResponse.record);
       })
-      .catch(() => setError("Unable to fetch saved details from the backend."));
+      .catch(() => setError("Nije moguće učitati sačuvane detalje sa bekenda."));
   }, [searchParams, slug]);
 
   return (
     <AdminLayout
-      title={scenario ? `${scenario.title} Details` : "Details"}
-      breadcrumb={`Home / QA Forms / ${scenario?.title ?? "Details"} / Details`}
+      title={scenario ? `${scenario.title} — detalji` : "Detalji"}
+      breadcrumb={`Početna / QA formulari / ${scenario?.title ?? "Detalji"} / Detalji`}
       actions={
         slug ? (
           <div className="toolbar-actions">
             <Link to={`/forms/${slug}`} className="secondary-btn">
-              Back to form
+              Nazad na formular
             </Link>
           </div>
         ) : null
@@ -69,7 +69,7 @@ export function FormDetailsPage() {
       {error ? <div className="alert">{error}</div> : null}
       {!error && (!scenario || !record) ? (
         <section className="content-card">
-          <div className="card-content">Loading details...</div>
+          <div className="card-content">Učitavanje detalja…</div>
         </section>
       ) : null}
       {scenario && record ? (
@@ -77,9 +77,9 @@ export function FormDetailsPage() {
           <div className="card-head">
             <div>
               <p className="section-title">{scenario.title}</p>
-              <p className="section-subtitle">Saved data fetched from the backend details endpoint.</p>
+              <p className="section-subtitle">Podaci učitani sa bekend endpointa za detalje.</p>
             </div>
-            <div className="expect-chip">Details</div>
+            <div className="expect-chip">Detalji</div>
           </div>
           <div className="card-content">
             <div className="details-list">

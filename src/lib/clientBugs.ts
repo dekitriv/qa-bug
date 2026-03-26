@@ -1,44 +1,13 @@
-import type { FormScenario, FormSlug } from "@shared/types";
+import type { FormSlug } from "@shared/types";
 
-export interface ClientBugRefs {
-  jobAssignmentShadow: Record<string, unknown>;
-}
-
-export function createClientBugRefs(scenario: FormScenario): ClientBugRefs {
-  return {
-    jobAssignmentShadow: {
-      department: scenario.initialValues.department,
-      employmentType: scenario.initialValues.employmentType
-    }
-  };
-}
-
-export function applyClientBugTransform(
-  slug: FormSlug,
-  values: Record<string, unknown>,
-  refs: ClientBugRefs
-): Record<string, unknown> {
+export function applyClientBugTransform(slug: FormSlug, values: Record<string, unknown>): Record<string, unknown> {
   switch (slug) {
-    case "job-assignment":
-      return {
-        ...values,
-        department: refs.jobAssignmentShadow.department,
-        employmentType: refs.jobAssignmentShadow.employmentType
-      };
-    case "payroll-setup":
-      return {
-        ...values,
-        bankAccountNumber: String(values.bankAccountNumber ?? "").replace(/^0+/, "")
-      };
-    case "benefits-enrollment":
-      return values.coverageTier === "family"
-        ? {
-            ...values,
-            dependents: ""
-          }
-        : values;
+    case "job-assignment": {
+      // Namerno ne šaljemo ime fajla u JSON — bekend traži attachmentFileName; fajl se ne kači u payload.
+      const { attachmentFileName: _omit, ...rest } = values;
+      return rest;
+    }
     default:
       return values;
   }
 }
-

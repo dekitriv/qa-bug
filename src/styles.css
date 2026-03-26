@@ -222,29 +222,6 @@ textarea {
   line-height: 1.5;
 }
 
-.soft-panel {
-  margin-bottom: 18px;
-  border: 1px solid #e5edf9;
-  border-radius: 10px;
-  background: #f8fbff;
-  padding: 14px 16px;
-}
-
-.soft-panel-title {
-  margin: 0 0 6px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #5470b8;
-  text-transform: uppercase;
-}
-
-.soft-panel-text {
-  margin: 0;
-  font-size: 13px;
-  color: #60708f;
-  line-height: 1.5;
-}
-
 .data-table {
   width: 100%;
 }
@@ -318,6 +295,13 @@ textarea {
 
 .field-shell.full {
   grid-column: 1 / -1;
+}
+
+.field-shell input.file-input,
+.field-shell input[type="file"] {
+  padding: 8px 0;
+  border: none;
+  background: transparent;
 }
 
 .field-shell input,
