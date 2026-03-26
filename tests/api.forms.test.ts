@@ -65,7 +65,7 @@ describe("scenario api logic", () => {
     expect(result.data).toBe("ERROR");
   });
 
-  it("returns 500 with simulated CORS error for system access submit", () => {
+  it("returns 500 with CORS-style message for system access submit", () => {
     const result = runSubmission("system-access-request", {
       roleProfile: "analyst",
       requestedSystems: ["google-workspace", "jira", "notion"],
@@ -74,7 +74,9 @@ describe("scenario api logic", () => {
 
     expect(result.status).toBe(500);
     expect(result.success).toBe(false);
-    expect(result.message).toBe("Simulirana CORS greška.");
+    expect(result.message).toBe(
+      "Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at the requested URL."
+    );
     expect(result.data).toBeNull();
   });
 

@@ -23,5 +23,5 @@
    Expected: enrollment should succeed with a normal success payload (for example HTTP 201) instead of 409 / ERROR.
 
 6. `system-access-request`
-   Backend defect: submit returns HTTP 500 with the message `Simulirana CORS greška.`.
-   Expected: access request submission should succeed with a normal success payload instead of a simulated CORS error.
+   Backend defect: submit returns HTTP 500; `message` is browser-style CORS text (`Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at the requested URL.`). The Vite UI does not show this in a banner; it throws so the error surfaces like an uncaught failure.
+   Expected: submission should succeed with a normal success payload instead of 500 / CORS-style message.

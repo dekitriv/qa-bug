@@ -25,9 +25,12 @@ test("payroll setup shows swallowed leading zero in saved details", async ({ pag
   await expect(page.getByText("600123400019988")).toBeVisible();
 });
 
-test("system access submit shows simulated CORS server error", async ({ page }) => {
+test("system access submit propagates CORS-style error without banner", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (err) => pageErrors.push(err.message));
+
   await page.goto("/forms/system-access-request");
   await page.getByRole("button", { name: "Podnesi zahtev za pristup" }).click();
 
-  await expect(page.getByRole("alert")).toContainText("Simulirana CORS greška.");
+  await expect.poll(() => pageErrors.some((m) => m.includes("Cross-Origin Request Blocked"))).toBeTruthy();
 });

@@ -432,7 +432,8 @@ export function submitFormResponse(slug, payload) {
       result = {
         success: false,
         status: 500,
-        message: "Simulirana CORS greška.",
+        message:
+          "Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at the requested URL.",
         data: null
       };
       break;

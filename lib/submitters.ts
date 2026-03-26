@@ -82,8 +82,11 @@ export function runSubmission(slug: FormSlug, values: Record<string, unknown>): 
       return {
         ok: false,
         status: 500,
-        message: "Simulirana CORS greška.",
-        reviewNotes: ["Bekend simulira CORS problem tako što vraća HTTP 500 i poruku o CORS-u."],
+        message:
+          "Cross-Origin Request Blocked: The Same Origin Policy disallows reading the remote resource at the requested URL.",
+        reviewNotes: [
+          "Bekend vraća HTTP 500 sa porukom u stilu CORS greške iz pregledača (Same-Origin Policy)."
+        ],
         submittedData: validValues,
         savedData: null
       };

@@ -276,13 +276,14 @@ const bugSpecs: BugSpec[] = [
   {
     slug: "system-access-request",
     category: "backend",
-    title: "Simulirana CORS greška na submit-u",
-    summary: "Slanje zahteva vraća HTTP 500 sa porukom koja simulira CORS problem.",
+    title: "CORS poruka u telu odgovora (HTTP 500)",
+    summary:
+      "Slanje zahteva vraća HTTP 500; u polju message stoji tekst kao u konzoli pregledača (Same-Origin Policy / Cross-Origin Request Blocked).",
     reproduction: [
       "Otvorite korak 6 i pošaljite formular.",
-      "U Network tabu proverite status 500 i poruku „Simulirana CORS greška.“."
+      "U Network tabu proverite status 500 i telo odgovora (message). Na frontu se ne prikazuje baner — greška se propagira."
     ],
-    expectedBehavior: "Bekend treba da vrati uspešan odgovor umesto simulirane CORS greške."
+    expectedBehavior: "Bekend treba da vrati uspešan odgovor umesto 500 sa CORS-sličnom porukom."
   }
 ];
 

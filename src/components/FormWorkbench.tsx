@@ -164,6 +164,9 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
             }
           }
         }
+        if (scenario.slug === "system-access-request") {
+          throw new Error(body.message);
+        }
         setServerErrorBanner(body.message);
         return;
       }
@@ -180,7 +183,11 @@ export function FormWorkbench({ scenario }: { scenario: FormScenario }) {
       }
 
       navigate(`/forms/${scenario.slug}/details?token=${encodeURIComponent(recordToken)}`);
-    } catch {}
+    } catch (err) {
+      if (scenario.slug === "system-access-request") {
+        throw err;
+      }
+    }
   }
 
   function handleReset() {
