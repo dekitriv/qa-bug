@@ -1,13 +1,9 @@
-import { getScenario } from "../../shared/scenarios.js";
+import { getFormResponse, methodNotAllowedResponse } from "../_lib/service.js";
 
 export default function handler(req: any, res: any) {
   if (req.method !== "GET") {
-    res.status(405).json({
-      success: false,
-      status: 405,
-      message: "Method not allowed.",
-      data: null
-    });
+    const response = methodNotAllowedResponse();
+    res.status(response.status).json(response);
     return;
   }
 
@@ -18,24 +14,6 @@ export default function handler(req: any, res: any) {
         ? req.query.slug[0]
         : "";
 
-  const scenario = getScenario(slug);
-
-  if (!scenario) {
-    res.status(404).json({
-      success: false,
-      status: 404,
-      message: "Resource not found.",
-      data: null
-    });
-    return;
-  }
-
-  res.status(200).json({
-    success: true,
-    status: 200,
-    message: "Form fetched successfully.",
-    data: {
-      form: scenario
-    }
-  });
+  const response = getFormResponse(slug);
+  res.status(response.status).json(response);
 }
