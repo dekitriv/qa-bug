@@ -1,3 +1,5 @@
+import { Buffer } from "node:buffer";
+
 import type { FormSlug } from "./types";
 
 interface DetailsTokenPayload {
@@ -36,4 +38,3 @@ export function parseDetailsToken(token: string, expectedSlug: FormSlug): Record
     return null;
   }
 }
-

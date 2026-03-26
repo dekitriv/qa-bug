@@ -1,18 +1,9 @@
 import { buildNonFieldValidationError, getScenario, listPublicForms } from "./scenarios";
 import { createDetailsToken, parseDetailsToken } from "./details-token";
 import { runSubmission } from "./submitters";
-import type { ApiResponse, FormSlug, SubmitPayload } from "./types";
+import type { ApiResponse, SubmitPayload } from "./types";
 
-function notFound(): ApiResponse<null> {
-  return {
-    success: false,
-    status: 404,
-    message: "Resource not found.",
-    data: null
-  };
-}
-
-function methodNotAllowed(): ApiResponse<null> {
+export function unsupportedMethodResponse(): ApiResponse<null> {
   return {
     success: false,
     status: 405,
@@ -32,11 +23,16 @@ export function getFormsResponse() {
   } satisfies ApiResponse<{ forms: ReturnType<typeof listPublicForms> }>;
 }
 
-export function getFormResponse(slug: string): ApiResponse<{ form: NonNullable<ReturnType<typeof getScenario>> } | null> {
+export function getFormResponse(slug: string) {
   const scenario = getScenario(slug);
 
   if (!scenario) {
-    return notFound();
+    return {
+      success: false,
+      status: 404,
+      message: "Resource not found.",
+      data: null
+    } satisfies ApiResponse<null>;
   }
 
   return {
@@ -46,14 +42,19 @@ export function getFormResponse(slug: string): ApiResponse<{ form: NonNullable<R
     data: {
       form: scenario
     }
-  };
+  } satisfies ApiResponse<{ form: typeof scenario }>;
 }
 
 export function getFormDetailsResponse(slug: string, token: string | null) {
   const scenario = getScenario(slug);
 
   if (!scenario) {
-    return notFound();
+    return {
+      success: false,
+      status: 404,
+      message: "Resource not found.",
+      data: null
+    } satisfies ApiResponse<null>;
   }
 
   if (!token) {
@@ -76,14 +77,24 @@ export function getFormDetailsResponse(slug: string, token: string | null) {
   } satisfies ApiResponse<{ record: Record<string, unknown> }>;
 }
 
-export function submitFormResponse(slug: string, payload: SubmitPayload) {
+export function submitFormResponse(slug: string, payload: SubmitPayload | { values?: Record<string, unknown> } | unknown) {
   const scenario = getScenario(slug);
 
   if (!scenario) {
-    return notFound();
+    return {
+      success: false,
+      status: 404,
+      message: "Resource not found.",
+      data: null
+    } satisfies ApiResponse<null>;
   }
 
-  const result = runSubmission(scenario.slug, payload.values ?? {});
+  const safePayload =
+    typeof payload === "object" && payload !== null && "values" in payload
+      ? (payload as SubmitPayload)
+      : { values: {} };
+
+  const result = runSubmission(scenario.slug, safePayload.values ?? {});
 
   if (result.success && result.data && typeof result.data === "object" && !Array.isArray(result.data)) {
     const record = result.data as Record<string, unknown>;
@@ -123,16 +134,4 @@ export function normalizeToken(value: string | string[] | undefined): string | n
   }
 
   return null;
-}
-
-export function normalizePayload(body: unknown): SubmitPayload {
-  if (typeof body === "object" && body !== null && "values" in body) {
-    return body as SubmitPayload;
-  }
-
-  return { values: {} };
-}
-
-export function unsupportedMethodResponse() {
-  return methodNotAllowed();
 }
