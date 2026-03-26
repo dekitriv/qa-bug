@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  background:
+    radial-gradient(circle at top left, rgba(159, 122, 49, 0.18), transparent 34%),
+    radial-gradient(circle at 80% 10%, rgba(127, 59, 31, 0.12), transparent 28%),
+    linear-gradient(180deg, #f7f3eb 0%, #f2ede2 100%);
+}
+
+body {
+  color: #141414;
+  font-family: "Segoe UI Variable", "Trebuchet MS", sans-serif;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.grid-plate {
+  background-image:
+    linear-gradient(rgba(20, 20, 20, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 20, 20, 0.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.field-shell {
+  @apply flex flex-col gap-2;
+}
+
+.field-shell input,
+.field-shell select,
+.field-shell textarea {
+  @apply w-full rounded-none border border-ink/20 bg-white px-4 py-3 text-sm text-ink shadow-sm outline-none transition;
+}
+
+.field-shell input:focus,
+.field-shell select:focus,
+.field-shell textarea:focus {
+  @apply border-brass ring-2 ring-brass/20;
+}
+
+.field-shell textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.field-error {
+  @apply text-xs uppercase tracking-[0.16em] text-rust;
+}
+
+.json-block {
+  @apply overflow-auto border border-ink/15 bg-[#191816] p-4 font-mono text-xs leading-6 text-[#f8f2e8];
+}
+
