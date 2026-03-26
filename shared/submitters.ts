@@ -72,10 +72,10 @@ export function runSubmission(
       };
     case "system-access-request":
       return {
-        success: true,
-        status: 201,
-        message: "Zahtev za pristup je poslat.",
-        data: validValues
+        success: false,
+        status: 500,
+        message: "Simulirana CORS greška.",
+        data: null
       };
   }
 }

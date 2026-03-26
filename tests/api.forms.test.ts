@@ -65,16 +65,17 @@ describe("scenario api logic", () => {
     expect(result.data).toBe("ERROR");
   });
 
-  it("returns all requested systems for system access submit", () => {
+  it("returns 500 with simulated CORS error for system access submit", () => {
     const result = runSubmission("system-access-request", {
       roleProfile: "analyst",
       requestedSystems: ["google-workspace", "jira", "notion"],
       notes: ""
     });
 
-    expect(result.status).toBe(201);
-    expect(result.success).toBe(true);
-    expect((result.data as { requestedSystems: string[] }).requestedSystems).toHaveLength(3);
+    expect(result.status).toBe(500);
+    expect(result.success).toBe(false);
+    expect(result.message).toBe("Simulirana CORS greška.");
+    expect(result.data).toBeNull();
   });
 
   it("returns payroll details with leading zero swallowed on the saved account number", () => {

@@ -430,10 +430,10 @@ export function submitFormResponse(slug, payload) {
       break;
     case "system-access-request":
       result = {
-        success: true,
-        status: 201,
-        message: "Access request submitted.",
-        data: validValues
+        success: false,
+        status: 500,
+        message: "Simulirana CORS greška.",
+        data: null
       };
       break;
     default:

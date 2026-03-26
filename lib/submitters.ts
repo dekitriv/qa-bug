@@ -80,14 +80,12 @@ export function runSubmission(slug: FormSlug, values: Record<string, unknown>): 
       };
     case "system-access-request":
       return {
-        ok: true,
-        status: 201,
-        message: "Zahtev za pristup je poslat.",
-        reviewNotes: [
-          "U lokalnom dev okruženju submit ide direktno na port 4000; ako bekend ne pošalje CORS zaglavlja, pregledač blokira odgovor."
-        ],
+        ok: false,
+        status: 500,
+        message: "Simulirana CORS greška.",
+        reviewNotes: ["Bekend simulira CORS problem tako što vraća HTTP 500 i poruku o CORS-u."],
         submittedData: validValues,
-        savedData: validValues
+        savedData: null
       };
   }
 }

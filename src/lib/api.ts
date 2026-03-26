@@ -2,18 +2,6 @@ import type { ApiResponse, FormScenario, PublicFormSummary, SubmitPayload } from
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
-/** U dev-u korak 6 šalje POST direktno na :4000 da bi važio CORS (bekend namerno ne šalje CORS zaglavlja za taj endpoint). */
-function submitEndpointUrl(slug: string): string {
-  const useDirectBackend =
-    slug === "system-access-request" &&
-    (import.meta.env.DEV || import.meta.env.VITE_SYSTEM_ACCESS_DIRECT_API === "true");
-  if (useDirectBackend) {
-    const origin = import.meta.env.VITE_BACKEND_ORIGIN ?? "http://localhost:4000";
-    return `${origin}/api/forms/${slug}/submit`;
-  }
-  return `${API_BASE_URL}/forms/${slug}/submit`;
-}
-
 async function parseJson<T>(response: Response): Promise<T> {
   const body = (await response.json()) as ApiResponse<T>;
   if (!response.ok) {
@@ -38,7 +26,7 @@ export async function fetchFormDetails(slug: string, token: string) {
 }
 
 export async function submitForm(slug: string, payload: SubmitPayload) {
-  const response = await fetch(submitEndpointUrl(slug), {
+  const response = await fetch(`${API_BASE_URL}/forms/${slug}/submit`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -46,7 +34,9 @@ export async function submitForm(slug: string, payload: SubmitPayload) {
     body: JSON.stringify(payload)
   });
 
-  const body = (await response.json()) as ApiResponse<Record<string, unknown> | Record<string, string[]> | Record<string, string>>;
+  const body = (await response.json()) as ApiResponse<
+    Record<string, unknown> | Record<string, string[]> | Record<string, string> | null
+  >;
   return {
     ok: response.ok,
     status: response.status,

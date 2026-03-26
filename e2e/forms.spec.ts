@@ -25,9 +25,9 @@ test("payroll setup shows swallowed leading zero in saved details", async ({ pag
   await expect(page.getByText("600123400019988")).toBeVisible();
 });
 
-test("system access submit stays on form when CORS blocks response in local dev", async ({ page }) => {
+test("system access submit shows simulated CORS server error", async ({ page }) => {
   await page.goto("/forms/system-access-request");
   await page.getByRole("button", { name: "Podnesi zahtev za pristup" }).click();
 
-  await expect(page).toHaveURL(/\/forms\/system-access-request\/?$/);
+  await expect(page.getByRole("alert")).toContainText("Simulirana CORS greška.");
 });

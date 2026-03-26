@@ -276,15 +276,13 @@ const bugSpecs: BugSpec[] = [
   {
     slug: "system-access-request",
     category: "backend",
-    title: "CORS blokira odgovor na submit (samo lokalni dev)",
-    summary:
-      "Za POST /api/forms/system-access-request/submit bekend ne šalje Access-Control-Allow-Origin. Front u dev-u šalje zahtev sa :5173 na :4000, pa pregledač blokira odgovor (CORS).",
+    title: "Simulirana CORS greška na submit-u",
+    summary: "Slanje zahteva vraća HTTP 500 sa porukom koja simulira CORS problem.",
     reproduction: [
-      "Pokrenite npm run dev (Vite + Express na 4000).",
       "Otvorite korak 6 i pošaljite formular.",
-      "U konzoli / Network tabu posmatrajte CORS grešku; zahtev ne uspeva na frontu."
+      "U Network tabu proverite status 500 i poruku „Simulirana CORS greška.“."
     ],
-    expectedBehavior: "Bekend treba da vrati odgovor sa odgovarajućim CORS zaglavljima za origin fronta."
+    expectedBehavior: "Bekend treba da vrati uspešan odgovor umesto simulirane CORS greške."
   }
 ];
 

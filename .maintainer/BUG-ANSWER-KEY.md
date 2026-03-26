@@ -23,5 +23,5 @@
    Expected: enrollment should succeed with a normal success payload (for example HTTP 201) instead of 409 / ERROR.
 
 6. `system-access-request`
-   Backend defect (local dev only): for `POST /api/forms/system-access-request/submit` the Express server does not apply the usual CORS middleware, so the response has no `Access-Control-Allow-Origin`. The Vite app submits that form directly to `http://localhost:4000`, so the browser blocks the response (CORS). Other forms still use the `/api` proxy and are unaffected.
-   Expected: the API should send appropriate CORS headers for the frontend origin so the submit succeeds.
+   Backend defect: submit returns HTTP 500 with the message `Simulirana CORS greška.`.
+   Expected: access request submission should succeed with a normal success payload instead of a simulated CORS error.
